@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ApiInfo, AppStore, ContentItem, MenuStore } from '../..';
+import { ApiInfo, AppStore, ContentItem, ContentItemModel, MenuStore } from '../..';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import useSelectedTag from './useSelectedTag';
 import useItemReverseIndex from './useItemReverseIndex';
@@ -56,15 +56,14 @@ const VirtualizedContent = ({ store, menu }: VirtualizedContentProps) => {
 
   return (
     <div ref={scrollableRef} style={{ height: '100dvh', width: '100%', overflowY: 'auto' }}>
+      <ApiInfo store={store} />
       <div
         style={{
-          height: virtualizer.getTotalSize() + 257,
+          height: virtualizer.getTotalSize(),
           width: '100%',
           position: 'relative',
         }}
       >
-        <ApiInfo store={store} />
-
         {virtualizer.getVirtualItems().map(virtualItem => (
           <div
             key={virtualItem.key}
@@ -75,12 +74,12 @@ const VirtualizedContent = ({ store, menu }: VirtualizedContentProps) => {
               top: 0,
               left: 0,
               width: '100%',
-              transform: `translateY(${virtualItem.start + 500}px)`,
+              transform: `translateY(${virtualItem.start}px)`,
             }}
           >
             <ContentItem
               key={renderables[virtualItem.index].id}
-              item={renderables[virtualItem.index] as any}
+              item={renderables[virtualItem.index] as ContentItemModel}
             />
           </div>
         ))}
